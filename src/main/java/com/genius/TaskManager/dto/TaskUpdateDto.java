@@ -3,13 +3,8 @@ package com.genius.TaskManager.dto;
 import com.genius.TaskManager.enums.TaskStatus;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
-public class TaskResponseDto {
-    private long id;
-    private String title;
+public class TaskUpdateDto {
     private String description;
     private TaskStatus status;
-    private LocalDate createdAt;
 }
