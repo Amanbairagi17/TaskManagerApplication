@@ -4,6 +4,7 @@ import com.genius.TaskManager.dto.TaskRequestDto;
 import com.genius.TaskManager.dto.TaskResponseDto;
 import com.genius.TaskManager.dto.TaskUpdateDto;
 import com.genius.TaskManager.entity.TaskModel;
+import com.genius.TaskManager.exception.TaskNotFoundException;
 import com.genius.TaskManager.mapper.Mapper;
 import com.genius.TaskManager.repository.TaskRepository;
 import com.genius.TaskManager.service.TaskService;
@@ -21,11 +22,11 @@ public class TaskServiceImpl implements TaskService {
 
     private final Mapper<TaskModel, TaskRequestDto> requestDtoMapper;
     private final Mapper<TaskModel, TaskResponseDto> responseDtoMapper;
-    private final Mapper<TaskModel, TaskUpdateDto> updateDtoMapper;
+//    private final Mapper<TaskModel, TaskUpdateDto> updateDtoMapper;
 
     @Override
     public TaskResponseDto findTaskById(long id) {
-        TaskModel response = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found!!"));
+        TaskModel response = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found!!"));
 
         return responseDtoMapper.mapTo(response);
     }
@@ -42,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto updateTask(long id, TaskUpdateDto updateDto) {
         TaskModel response = taskRepository.findById(id).orElseThrow(() -> {
-            return new RuntimeException("Task not available with id : " +id);
+            return new TaskNotFoundException("Task not available with id : " +id);
         });
 
         response.setDescription(updateDto.getDescription());
@@ -65,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public String deleteTask(long id) {
         TaskModel response = taskRepository.findById(id).orElseThrow(() -> {
-            return new RuntimeException("Task not found!!");
+            return new TaskNotFoundException("Task not found!!");
         });
         taskRepository.deleteById(id);
 
